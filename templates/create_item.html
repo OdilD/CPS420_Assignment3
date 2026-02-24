@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Add New Item{% endblock %}
+
+{% block content %}
+<h2>Add New Item</h2>
+
+<form method="post" action="/items/ui">
+  <p>
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required>
+  </p>
+  <p>
+    <label for="description">Description (optional):</label><br>
+    <input type="text" id="description" name="description">
+  </p>
+  <p>
+    <label for="price">Price:</label><br>
+    <input type="number" id="price" name="price" step="0.01" min="0" required>
+  </p>
+  <p>
+    <button type="submit">Create Item</button>
+    <a href="/items/ui">Cancel</a>
+  </p>
+</form>
+{% endblock %}
