@@ -60,17 +60,13 @@ fastapi-sqlalchemy-service-layer/
 git clone https://github.com/Cnets-io/fastapi-sqlalchemy-service-layer.git
 cd fastapi-sqlalchemy-service-layer
 
-# 2. Create and activate a virtual environment
-python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
-
-# 3. Install dependencies
+# 2. Install dependencies
 pip install -r requirements.txt
 
-# 4. Run the application
+# 3. Run the application
 uvicorn app:app --reload
 
-# 5. Open your browser
+# 4. Open your browser
 #    http://127.0.0.1:8000/items/ui
 ```
 
