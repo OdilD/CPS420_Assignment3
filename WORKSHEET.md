@@ -1,0 +1,292 @@
+# Worksheet: FastAPI + SQLAlchemy Service Layer
+
+**Course:** Web Application Development  
+**Time:** 75 minutes  
+**Repo:** `git clone https://github.com/Cnets-io/fastapi-sqlalchemy-service-layer.git`
+
+---
+
+## Learning Objectives
+
+By the end of this lab you will be able to:
+
+1. Explain the purpose of a **service layer** and how it differs from direct database access.
+2. Implement CRUD operations inside `services/item_service.py`.
+3. Wire service functions to FastAPI route handlers in `app.py`.
+4. Render results using Jinja2 templates.
+
+---
+
+## Background
+
+This project separates concerns into three layers:
+
+| Layer | Folder / File | Responsibility |
+|-------|--------------|----------------|
+| **Database** | `db/` | SQLAlchemy engine, session, and ORM model |
+| **Service** | `services/` | Business logic; all DB queries live here |
+| **Presentation** | `app.py` + `templates/` | HTTP routes and HTML rendering |
+
+The `app.py` file should **never** import `Session` or query the database directly.
+All database work is delegated to the service layer.
+
+---
+
+## Project Structure
+
+```
+fastapi-sqlalchemy-service-layer/
+|-- app.py                  # FastAPI routes (presentation layer)
+|-- requirements.txt
+|-- db/
+|   |-- __init__.py
+|   |-- database.py         # Engine + get_db dependency
+|   `-- models.py           # Item ORM model
+|-- services/
+|   |-- __init__.py
+|   `-- item_service.py     # <-- YOU WILL COMPLETE THIS
+`-- templates/
+    |-- base.html
+    |-- index.html
+    `-- create_item.html
+```
+
+---
+
+## Setup (5 minutes)
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/Cnets-io/fastapi-sqlalchemy-service-layer.git
+cd fastapi-sqlalchemy-service-layer
+
+# 2. Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Run the application
+uvicorn app:app --reload
+
+# 5. Open your browser
+#    http://127.0.0.1:8000/items/ui
+```
+
+The app will start but most routes will return errors until you complete the exercises below.
+
+---
+
+## Part 1 - Explore the Existing Code (10 minutes)
+
+Open each file and answer the questions in your own words.
+
+### 1a. `db/models.py`
+
+- What table name does the `Item` model map to?
+- List every column and its Python type.
+- Which column has a default value? What is it?
+
+```
+Your answer:
+```
+
+### 1b. `db/database.py`
+
+- What SQLAlchemy function creates the engine?
+- What does `get_db` do, and why does it use `yield`?
+
+```
+Your answer:
+```
+
+### 1c. `app.py`
+
+- How does the `@app.on_event("startup")` handler differ from the older `@app.on_event` pattern?  
+  *(Hint: look at the lifespan context manager.)*
+- How does `app.py` receive a database session without importing `Session` directly?
+
+```
+Your answer:
+```
+
+---
+
+## Part 2 - Implement the Service Layer (40 minutes)
+
+Open `services/item_service.py`. You will find stub functions with `TODO` comments.
+Implement each function. **Do not modify `app.py` or any file in `db/`.**
+
+### Exercise 2.1 - `get_all_items`
+
+Return a list of all `Item` rows from the database.
+
+```python
+def get_all_items(db: Session) -> list[Item]:
+    # TODO: query all items and return them
+    pass
+```
+
+**Test:** Navigate to `http://127.0.0.1:8000/items/ui` — you should see an empty table (no error).
+
+---
+
+### Exercise 2.2 - `get_item_by_id`
+
+Return a single `Item` by primary key, or `None` if not found.
+
+```python
+def get_item_by_id(db: Session, item_id: int) -> Item | None:
+    # TODO
+    pass
+```
+
+---
+
+### Exercise 2.3 - `create_item`
+
+Create and persist a new `Item`. Return the saved object.
+
+```python
+def create_item(db: Session, name: str, description: str, price: float) -> Item:
+    # TODO: create an Item, add to session, commit, refresh, return
+    pass
+```
+
+**Test:** Use the form at `http://127.0.0.1:8000/items/ui/new` to create an item.
+
+---
+
+### Exercise 2.4 - `delete_item`
+
+Delete an item by ID. Return `True` if deleted, `False` if not found.
+
+```python
+def delete_item(db: Session, item_id: int) -> bool:
+    # TODO
+    pass
+```
+
+**Test:** Use the Delete button next to any item in the list.
+
+---
+
+### Exercise 2.5 - `apply_discount` (Challenge)
+
+Reduce the price of every item by `percent` percent (e.g., 10 means 10% off).
+Return the number of items updated.
+
+```python
+def apply_discount(db: Session, percent: float) -> int:
+    # TODO
+    pass
+```
+
+**Test:** `POST /items/discount?percent=10` (use the FastAPI docs at `/docs`).
+
+---
+
+## Part 3 - Verify with the API (10 minutes)
+
+Open `http://127.0.0.1:8000/docs` (Swagger UI) and test each endpoint:
+
+| Endpoint | Expected Result |
+|----------|-----------------|
+| `GET /items` | JSON list of all items |
+| `GET /items/{id}` | Single item JSON or 404 |
+| `POST /items` | New item created |
+| `DELETE /items/{id}` | Item removed |
+| `POST /items/discount?percent=10` | Prices reduced by 10% |
+
+For each endpoint, record the HTTP status code you received:
+
+```
+GET /items          status: ____
+GET /items/1        status: ____
+POST /items         status: ____
+DELETE /items/1     status: ____
+POST /items/discount status: ____
+```
+
+---
+
+## Part 4 - Reflection Questions (10 minutes)
+
+Answer in 2-3 sentences each.
+
+1. **Why is it better to keep database queries out of `app.py`?**
+
+```
+Your answer:
+```
+
+2. **What would you need to change if you switched from SQLite to PostgreSQL?**
+
+```
+Your answer:
+```
+
+3. **How does Jinja2 template inheritance (base.html) reduce code duplication?**
+
+```
+Your answer:
+```
+
+4. **What does `db.refresh(item)` do after `db.commit()`?**
+
+```
+Your answer:
+```
+
+---
+
+## Submission Checklist
+
+- [ ] `services/item_service.py` — all five functions implemented
+- [ ] UI at `/items/ui` displays items with no errors
+- [ ] Items can be created via the form
+- [ ] Items can be deleted via the Delete button
+- [ ] `/items/discount` reduces prices correctly
+- [ ] All reflection questions answered
+
+---
+
+## Solution Reference
+
+Solutions are available in the repository comments. Try to complete the exercises **before** reading them.
+
+```python
+# Exercise 2.1
+def get_all_items(db: Session) -> list[Item]:
+    return db.query(Item).all()
+
+# Exercise 2.2
+def get_item_by_id(db: Session, item_id: int) -> Item | None:
+    return db.query(Item).filter(Item.id == item_id).first()
+
+# Exercise 2.3
+def create_item(db: Session, name: str, description: str, price: float) -> Item:
+    item = Item(name=name, description=description, price=price)
+    db.add(item)
+    db.commit()
+    db.refresh(item)
+    return item
+
+# Exercise 2.4
+def delete_item(db: Session, item_id: int) -> bool:
+    item = db.query(Item).filter(Item.id == item_id).first()
+    if not item:
+        return False
+    db.delete(item)
+    db.commit()
+    return True
+
+# Exercise 2.5
+def apply_discount(db: Session, percent: float) -> int:
+    items = db.query(Item).all()
+    for item in items:
+        item.price = round(item.price * (1 - percent / 100), 2)
+    db.commit()
+    return len(items)
+```
