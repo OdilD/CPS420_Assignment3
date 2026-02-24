@@ -3,7 +3,7 @@
 **CPS 420:** Web Application Development–Web Services SOA
 **Time:** 75 minutes  
 **Repo:** `git clone https://github.com/Cnets-io/fastapi-sqlalchemy-service-layer.git`
-
+**Assignment:** Clone this repository and submit to your own new Git repository.
 ---
 
 ## Learning Objectives
