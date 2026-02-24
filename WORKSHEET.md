@@ -1,6 +1,6 @@
 # Worksheet: FastAPI + SQLAlchemy Service Layer
 
-**Course:** Web Application Development  
+**CPS 420:** Web Application Development–Web Services SOA
 **Time:** 75 minutes  
 **Repo:** `git clone https://github.com/Cnets-io/fastapi-sqlalchemy-service-layer.git`
 
