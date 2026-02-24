@@ -1,9 +1,13 @@
 # Worksheet: FastAPI + SQLAlchemy Service Layer
 
 **CPS 420:** Web Application Development–Web Services SOA
+
 **Time:** 75 minutes  
+
 **Repo:** `git clone https://github.com/Cnets-io/fastapi-sqlalchemy-service-layer.git`
+
 **Assignment:** Clone this repository and submit to your own new Git repository.
+
 ---
 
 ## Learning Objectives
@@ -56,9 +60,13 @@ fastapi-sqlalchemy-service-layer/
 ## Setup (5 minutes)
 
 ```bash
-# 1. Clone the repository
+# 1. Clone the repository and create a new one that is no longer linked
 git clone https://github.com/Cnets-io/fastapi-sqlalchemy-service-layer.git
 cd fastapi-sqlalchemy-service-layer
+git remote remove origin
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_NEW_REPO.git
+git branch -M main
+git push -u origin main
 
 # 2. Install dependencies
 pip install -r requirements.txt
