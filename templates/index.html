@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}All Items{% endblock %}
+
+{% block content %}
+<h2>All Items</h2>
+<p><a href="/items/ui/new">+ Add New Item</a></p>
+
+{% if items %}
+<table border="1" cellpadding="6">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td>{{ item.id }}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.description or "-" }}</td>
+      <td>${{ "%.2f" | format(item.price) }}</td>
+      <td>
+        <form method="post" action="/items/ui/{{ item.id }}/delete" style="display:inline">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No items yet. <a href="/items/ui/new">Add one!</a></p>
+{% endif %}
+{% endblock %}
