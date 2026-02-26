@@ -94,6 +94,11 @@ Open each file and answer the questions in your own words.
 
 ```
 Your answer:
+- The Item model maps to the "items" table.
+- id — int, name — str, description — str, price — float
+- he description column has a default of "" (empty string).
+
+
 ```
 
 ### 1b. `db/database.py`
