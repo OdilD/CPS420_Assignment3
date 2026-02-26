@@ -108,6 +108,9 @@ Your answer:
 
 ```
 Your answer:
+- create_engine creates the engine.
+- get_db opens a database session, yields it to the route handler, then closes it in finally. It uses yield so FastAPI can run the cleanup code after the request finishes.
+
 ```
 
 ### 1c. `app.py`
