@@ -121,6 +121,8 @@ Your answer:
 
 ```
 Your answer:
+- The old way used two separate decorators — one for startup, one for shutdown. The new way uses a single lifespan function with yield — everything before yield is startup, everything after is shutdown. Cleaner!
+- Database session: The route functions have db: Session = Depends(get_db) in their parameters. FastAPI sees Depends(get_db), calls that function, and passes the session in automatically. So the route never has to create a session itself.
 ```
 
 ---
