@@ -233,24 +233,28 @@ Answer in 2-3 sentences each.
 
 ```
 Your answer:
+app.py already has a lot going on — routes, Pydantic schemas, HTTP responses. All the actual database stuff like db.query(Item).filter(...) is in item_service.py where it belongs. If we mixed that into app.py it would be a mess, and if we needed to change how items are queried we'd have to dig through all the route handlers to find it.
 ```
 
 2. **What would you need to change if you switched from SQLite to PostgreSQL?**
 
 ```
 Your answer:
+The only thing I'd need to change in the code is the DATABASE_URL in database.py from sqlite:///./app.db to something like postgresql://user:password@localhost/dbname. 
 ```
 
 3. **How does Jinja2 template inheritance (base.html) reduce code duplication?**
 
 ```
 Your answer:
+base.html has all the shared stuff like the navbar and <head> written once. Child templates like items_list.html just extend it and fill in {% block content %} with their own content. Without it, you'd have to copy paste the same HTML into every template.
 ```
 
 4. **What does `db.refresh(item)` do after `db.commit()`?**
 
 ```
 Your answer:
+I can see it's called in both create_item and update_item in item_service.py right after db.commit(). After committing, the item object goes stale so db.refresh(db_item) reloads it from the database — this is especially important for getting back the auto-generated id after creating a new item.
 ```
 
 ---
